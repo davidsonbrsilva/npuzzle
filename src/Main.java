@@ -1,0 +1,641 @@
+
+import com.davidsonbsilv.npuzzle.search.AStar;
+import com.davidsonbsilv.npuzzle.search.Board;
+import com.davidsonbsilv.npuzzle.search.BreadthFirst;
+import com.davidsonbsilv.npuzzle.search.Greedy;
+import com.davidsonbsilv.npuzzle.search.Hamming;
+import com.davidsonbsilv.npuzzle.search.IteractiveDepthFirst;
+import com.davidsonbsilv.npuzzle.search.Manhattan;
+import com.davidsonbsilv.npuzzle.search.Node;
+import com.davidsonbsilv.npuzzle.search.Path;
+import com.davidsonbsilv.npuzzle.search.Search;
+import com.davidsonbsilv.npuzzle.search.Solver;
+import java.util.ArrayList;
+import java.util.Random;
+import javax.swing.JLabel;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Davidson
+ */
+public class Main extends javax.swing.JFrame
+{
+    private byte[][] startSet;
+    private byte[][] goalSet;
+    private int counter;
+    private JLabel[] tiles;
+    /**
+     * Creates new form Main
+     */
+    public Main()
+    {
+        initComponents();
+        
+        counter = 1;
+        
+        byte[][] startBoard = 
+        {
+            { 7, 2, 4 },
+            { 5, 0, 6 },
+            { 8, 3, 1 }
+        };
+        
+        this.startSet = startBoard;
+        
+        byte[][] goalSet = 
+        {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 0 }
+        };
+        
+        this.goalSet = goalSet;
+        
+        tiles = new JLabel[9];
+        tiles[0] = tile1;
+        tiles[1] = tile2;
+        tiles[2] = tile3;
+        tiles[3] = tile4;
+        tiles[4] = tile5;
+        tiles[5] = tile6;
+        tiles[6] = tile7;
+        tiles[7] = tile8;
+        tiles[8] = tile0;
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            tiles[i].setOpaque(true);
+        }
+        
+        tile1.setText(String.valueOf(startSet[0][0]));
+        tile2.setText(String.valueOf(startSet[0][1]));
+        tile3.setText(String.valueOf(startSet[0][2]));
+        tile4.setText(String.valueOf(startSet[1][0]));
+        tile5.setText(String.valueOf(startSet[1][1]));
+        tile6.setText(String.valueOf(startSet[1][2]));
+        tile7.setText(String.valueOf(startSet[2][0]));
+        tile8.setText(String.valueOf(startSet[2][1]));
+        tile0.setText(String.valueOf(startSet[2][2]));
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            if (tiles[i].getText().equals("0"))
+            {
+                tiles[i].setText("");
+                tiles[i].setOpaque(false);
+            }
+        }
+    }
+    
+    private void updateBoard()
+    {
+        Node current = (Node)Solver.getInstance().getSteps().get(counter);
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            tiles[i].setOpaque(true);
+        }
+        
+        tile1.setText(String.valueOf(current.getState().getSet()[0][0]));
+        tile2.setText(String.valueOf(current.getState().getSet()[0][1]));
+        tile3.setText(String.valueOf(current.getState().getSet()[0][2]));
+        tile4.setText(String.valueOf(current.getState().getSet()[1][0]));
+        tile5.setText(String.valueOf(current.getState().getSet()[1][1]));
+        tile6.setText(String.valueOf(current.getState().getSet()[1][2]));
+        tile7.setText(String.valueOf(current.getState().getSet()[2][0]));
+        tile8.setText(String.valueOf(current.getState().getSet()[2][1]));
+        tile0.setText(String.valueOf(current.getState().getSet()[2][2]));
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            if (tiles[i].getText().equals("0"))
+            {
+                tiles[i].setText("");
+                tiles[i].setOpaque(false);
+            }
+        }
+    }
+    
+    private boolean isSolvable(byte[][] set)
+    {
+        int inversionsCounter = 0;
+        byte[] tiles = new byte[9];
+        
+        tiles[0] = set[0][0];
+        tiles[1] = set[0][1];
+        tiles[2] = set[0][2];
+        tiles[3] = set[1][0];
+        tiles[4] = set[1][1];
+        tiles[5] = set[1][2];
+        tiles[6] = set[2][0];
+        tiles[7] = set[2][1];
+        tiles[8] = set[2][2];
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {         
+            for (int j = i; j < tiles.length; ++j)
+            {
+                if (tiles[i] != 0 && tiles[j] != 0)
+                {
+                    if (tiles[j] < tiles[i])
+                    {
+                        inversionsCounter++;
+                    }
+                }
+            }
+        }
+        
+        System.out.println(inversionsCounter);
+        return inversionsCounter % 2 == 0;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        view = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        board = new javax.swing.JPanel();
+        tile1 = new javax.swing.JLabel();
+        tile2 = new javax.swing.JLabel();
+        tile3 = new javax.swing.JLabel();
+        tile4 = new javax.swing.JLabel();
+        tile5 = new javax.swing.JLabel();
+        tile6 = new javax.swing.JLabel();
+        tile7 = new javax.swing.JLabel();
+        tile8 = new javax.swing.JLabel();
+        tile0 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        nextButton = new javax.swing.JButton();
+        rightSide = new javax.swing.JPanel();
+        settings = new javax.swing.JPanel();
+        cases = new javax.swing.JPanel();
+        testCaseButton = new javax.swing.JButton();
+        randomButton = new javax.swing.JButton();
+        solvePanel = new javax.swing.JPanel();
+        methodList = new javax.swing.JComboBox<>();
+        solveButton = new javax.swing.JButton();
+        output = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        outputArea = new javax.swing.JTextPane();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("8-Puzzle");
+        setBackground(new java.awt.Color(51, 51, 51));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 2));
+
+        view.setBackground(new java.awt.Color(240, 240, 250));
+        view.setLayout(new javax.swing.BoxLayout(view, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridLayout(1, 1, 10, 10));
+
+        board.setBackground(new java.awt.Color(255, 255, 255));
+        board.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        board.setOpaque(false);
+        board.setPreferredSize(new java.awt.Dimension(400, 400));
+        board.setLayout(new java.awt.GridLayout(3, 3, 2, 2));
+
+        tile1.setBackground(new java.awt.Color(255, 255, 255));
+        tile1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile1.setForeground(new java.awt.Color(153, 102, 255));
+        tile1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile1.setText("1");
+        tile1.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile1);
+
+        tile2.setBackground(new java.awt.Color(255, 255, 255));
+        tile2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile2.setForeground(new java.awt.Color(153, 102, 255));
+        tile2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile2.setText("1");
+        tile2.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile2);
+
+        tile3.setBackground(new java.awt.Color(255, 255, 255));
+        tile3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile3.setForeground(new java.awt.Color(153, 102, 255));
+        tile3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile3.setText("1");
+        tile3.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile3);
+
+        tile4.setBackground(new java.awt.Color(255, 255, 255));
+        tile4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile4.setForeground(new java.awt.Color(153, 102, 255));
+        tile4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile4.setText("1");
+        tile4.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile4);
+
+        tile5.setBackground(new java.awt.Color(255, 255, 255));
+        tile5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile5.setForeground(new java.awt.Color(153, 102, 255));
+        tile5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile5.setText("1");
+        tile5.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile5);
+
+        tile6.setBackground(new java.awt.Color(255, 255, 255));
+        tile6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile6.setForeground(new java.awt.Color(153, 102, 255));
+        tile6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile6.setText("1");
+        tile6.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile6);
+
+        tile7.setBackground(new java.awt.Color(255, 255, 255));
+        tile7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile7.setForeground(new java.awt.Color(153, 102, 255));
+        tile7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile7.setText("1");
+        tile7.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile7);
+
+        tile8.setBackground(new java.awt.Color(255, 255, 255));
+        tile8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile8.setForeground(new java.awt.Color(153, 102, 255));
+        tile8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile8.setText("1");
+        tile8.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile8);
+
+        tile0.setBackground(new java.awt.Color(255, 255, 255));
+        tile0.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        tile0.setForeground(new java.awt.Color(153, 102, 255));
+        tile0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tile0.setText("1");
+        tile0.setPreferredSize(new java.awt.Dimension(80, 80));
+        board.add(tile0);
+
+        jPanel1.add(board);
+
+        view.add(jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(240, 240, 250));
+
+        nextButton.setText("Avançar");
+        nextButton.setEnabled(false);
+        nextButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                nextButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(nextButton);
+
+        view.add(jPanel2);
+
+        getContentPane().add(view);
+
+        rightSide.setBackground(new java.awt.Color(240, 240, 250));
+        rightSide.setOpaque(false);
+        rightSide.setLayout(new java.awt.GridLayout(2, 1));
+
+        settings.setBackground(new java.awt.Color(255, 255, 255));
+        settings.setPreferredSize(new java.awt.Dimension(848, 300));
+        settings.setLayout(new javax.swing.BoxLayout(settings, javax.swing.BoxLayout.PAGE_AXIS));
+
+        cases.setBackground(new java.awt.Color(255, 255, 255));
+        cases.setOpaque(false);
+        cases.setLayout(new javax.swing.BoxLayout(cases, javax.swing.BoxLayout.LINE_AXIS));
+
+        testCaseButton.setText("Caso de Teste");
+        testCaseButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                testCaseButtonActionPerformed(evt);
+            }
+        });
+        cases.add(testCaseButton);
+
+        randomButton.setText("Aleatório");
+        randomButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                randomButtonActionPerformed(evt);
+            }
+        });
+        cases.add(randomButton);
+
+        settings.add(cases);
+
+        solvePanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        methodList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A* por Manhattan", "A* por Hamming", "Guloso por Manhattan", "Guloso por Hamming", "Busca em Largura", "Busca em Profundidade Iterativa" }));
+        solvePanel.add(methodList);
+
+        solveButton.setText("Resolver");
+        solveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                solveButtonActionPerformed(evt);
+            }
+        });
+        solvePanel.add(solveButton);
+
+        settings.add(solvePanel);
+
+        rightSide.add(settings);
+
+        output.setBackground(new java.awt.Color(255, 255, 255));
+        output.setOpaque(false);
+        output.setLayout(new java.awt.GridLayout(1, 1));
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setForeground(new java.awt.Color(51, 255, 153));
+        jScrollPane1.setOpaque(false);
+
+        outputArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        outputArea.setContentType("text/html"); // NOI18N
+        outputArea.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
+        outputArea.setForeground(new java.awt.Color(153, 153, 153));
+        jScrollPane1.setViewportView(outputArea);
+
+        output.add(jScrollPane1);
+
+        rightSide.add(output);
+
+        getContentPane().add(rightSide);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void testCaseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_testCaseButtonActionPerformed
+    {//GEN-HEADEREND:event_testCaseButtonActionPerformed
+        byte[][] startBoard = 
+        {
+            { 7, 2, 4 },
+            { 5, 0, 6 },
+            { 8, 3, 1 }
+        };
+        /*byte[][] startBoard = 
+        {
+            { 1, 0, 2 },
+            { 4, 6, 3 },
+            { 7, 5, 8 }
+        };*/
+        /*byte[][] startBoard = 
+        {
+            { 4, 3, 0 },
+            { 5, 6, 8 },
+            { 7, 2, 1 }
+        };*/
+        /*byte[][] startBoard = 
+        {
+            { 7, 0, 3 },
+            { 5, 2, 1 },
+            { 6, 4, 8 }
+        };*/
+        /*byte[][] startBoard = 
+        {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 8, 7, 0 }
+        };*/
+        
+        System.out.println(isSolvable(startBoard));
+        
+        this.startSet = startBoard;
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            tiles[i].setOpaque(true);
+        }
+        
+        tile1.setText(String.valueOf(startSet[0][0]));
+        tile2.setText(String.valueOf(startSet[0][1]));
+        tile3.setText(String.valueOf(startSet[0][2]));
+        tile4.setText(String.valueOf(startSet[1][0]));
+        tile5.setText(String.valueOf(startSet[1][1]));
+        tile6.setText(String.valueOf(startSet[1][2]));
+        tile7.setText(String.valueOf(startSet[2][0]));
+        tile8.setText(String.valueOf(startSet[2][1]));
+        tile0.setText(String.valueOf(startSet[2][2]));
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            if (tiles[i].getText().equals("0"))
+            {
+                tiles[i].setText("");
+                tiles[i].setOpaque(false);
+            }
+        }
+    }//GEN-LAST:event_testCaseButtonActionPerformed
+
+    private void solveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_solveButtonActionPerformed
+    {//GEN-HEADEREND:event_solveButtonActionPerformed
+        System.out.println(isSolvable(startSet));
+        
+        Board startBoard = new Board(startSet);
+        Board goalBoard = new Board(goalSet);
+        Path myPath = new Path(startBoard, goalBoard);
+        Search method;
+        
+        switch (methodList.getSelectedIndex())
+        {
+            case 1:
+                method = new AStar(myPath, new Hamming());
+                break;
+            case 2:
+                method = new Greedy(myPath, new Manhattan());
+                break;
+            case 3:
+                method = new Greedy(myPath, new Hamming());
+                break;
+            case 4:
+                method = new BreadthFirst(myPath);
+                break;
+            case 5:
+                method = new IteractiveDepthFirst(myPath);
+                break;
+            default:
+                method = new AStar(myPath, new Manhattan());
+        }
+        
+        Solver.getInstance().solve(method);
+        outputArea.setText(Solver.getInstance().getMessage());
+        
+        if (Solver.getInstance().getSteps() != null)
+        {
+            nextButton.setEnabled(true);
+        }
+        else
+        {
+            nextButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_solveButtonActionPerformed
+
+    private void randomButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_randomButtonActionPerformed
+    {//GEN-HEADEREND:event_randomButtonActionPerformed
+        byte[][] startSet = new byte[3][3];
+        
+        do
+        {
+            ArrayList sequence = new ArrayList();
+            sequence.add(0);
+            sequence.add(1);
+            sequence.add(2);
+            sequence.add(3);
+            sequence.add(4);
+            sequence.add(5);
+            sequence.add(6);
+            sequence.add(7);
+            sequence.add(8);
+
+            ArrayList set = new ArrayList();
+            Random random = new Random();
+
+            while (!sequence.isEmpty())
+            {
+                int index = random.nextInt(sequence.size());
+                set.add(sequence.get(index));
+                sequence.remove(index);
+            }
+
+            
+            startSet[0][0] = (byte)(int)set.get(0);
+            startSet[0][1] = (byte)(int)set.get(1);
+            startSet[0][2] = (byte)(int)set.get(2);
+            startSet[1][0] = (byte)(int)set.get(3);
+            startSet[1][1] = (byte)(int)set.get(4);
+            startSet[1][2] = (byte)(int)set.get(5);
+            startSet[2][0] = (byte)(int)set.get(6);
+            startSet[2][1] = (byte)(int)set.get(7);
+            startSet[2][2] = (byte)(int)set.get(8);
+        } while (!isSolvable(startSet));
+        
+        this.startSet = startSet;
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            tiles[i].setText("");
+            tiles[i].setOpaque(true);
+        }
+        
+        tile1.setText(String.valueOf(startSet[0][0]));
+        tile2.setText(String.valueOf(startSet[0][1]));
+        tile3.setText(String.valueOf(startSet[0][2]));
+        tile4.setText(String.valueOf(startSet[1][0]));
+        tile5.setText(String.valueOf(startSet[1][1]));
+        tile6.setText(String.valueOf(startSet[1][2]));
+        tile7.setText(String.valueOf(startSet[2][0]));
+        tile8.setText(String.valueOf(startSet[2][1]));
+        tile0.setText(String.valueOf(startSet[2][2]));
+        
+        for (int i = 0; i < tiles.length; ++i)
+        {
+            if (tiles[i].getText().equals("0"))
+            {
+                tiles[i].setText("");
+                tiles[i].setOpaque(false);
+            }
+        }
+    }//GEN-LAST:event_randomButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_nextButtonActionPerformed
+    {//GEN-HEADEREND:event_nextButtonActionPerformed
+        if (counter == Solver.getInstance().getSteps().size() - 1)
+        {
+            updateBoard();
+            nextButton.setEnabled(false);
+            counter = 1;
+            return;
+        }
+        
+        updateBoard();
+        counter++;
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[])
+    {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex)
+        {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex)
+        {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex)
+        {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                new Main().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel board;
+    private javax.swing.JPanel cases;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> methodList;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JPanel output;
+    private javax.swing.JTextPane outputArea;
+    private javax.swing.JButton randomButton;
+    private javax.swing.JPanel rightSide;
+    private javax.swing.JPanel settings;
+    private javax.swing.JButton solveButton;
+    private javax.swing.JPanel solvePanel;
+    private javax.swing.JButton testCaseButton;
+    private javax.swing.JLabel tile0;
+    private javax.swing.JLabel tile1;
+    private javax.swing.JLabel tile2;
+    private javax.swing.JLabel tile3;
+    private javax.swing.JLabel tile4;
+    private javax.swing.JLabel tile5;
+    private javax.swing.JLabel tile6;
+    private javax.swing.JLabel tile7;
+    private javax.swing.JLabel tile8;
+    private javax.swing.JPanel view;
+    // End of variables declaration//GEN-END:variables
+}
